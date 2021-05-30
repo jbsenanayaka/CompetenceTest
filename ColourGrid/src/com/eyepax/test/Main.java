@@ -37,35 +37,38 @@ class Main {
 
 	private static void largestContinuesColourChain(String grid[][]) {
 
-		int maxLength = Integer.MIN_VALUE;
+		int maxLength = 0;
 		resultList = new ArrayList<String[][]>();
 		for (int i = 0; i < x; i++) {
 			for (int j = 0; j < y; j++) {
-				count = 0;
 				visited = new String[x][y];
+				count = 0;
 				if (j + 1 < y) {
 					doTraverse(grid[i][j], grid[i][j + 1], i, j, grid);
 				}
-				addResult(maxLength);
-				count = 0;
+				if (count != 0 && count == maxLength) {
+					resultList.add(visited);
+				} else if (count > maxLength) {
+					maxLength = count;
+					resultList.clear();
+					resultList.add(visited);
+				}
 				visited = new String[x][y];
+				count = 0;
 				if (i + 1 < x) {
 					doTraverse(grid[i][j], grid[i + 1][j], i, j, grid);
 				}
-				addResult(maxLength);
+				if (count != 0 && count == maxLength) {
+					resultList.add(visited);
+				} else if (count > maxLength) {
+					maxLength = count;
+					resultList.clear();
+					resultList.add(visited);
+				}
+				
 			}
 		}
 		showResult(grid, maxLength);
-	}
-
-	private static void addResult(int maxLength) {
-		if (count == maxLength) {
-			resultList.add(visited);
-		} else if (count > maxLength) {
-			maxLength = count;
-			resultList.clear();
-			resultList.add(visited);
-		}
 	}
 
 	private static void doTraverse(String currentNode, String neighbor, int i, int j, String grid[][]) {
